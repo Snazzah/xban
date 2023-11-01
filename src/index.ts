@@ -1,4 +1,4 @@
-import './env';
+import 'dotenv/config';
 import { SlashCreator, FastifyServer } from 'slash-create';
 import path from 'path';
 import { logger } from './logger';
@@ -8,7 +8,7 @@ const creator = new SlashCreator({
   publicKey: process.env.DISCORD_PUBLIC_KEY,
   token: process.env.DISCORD_BOT_TOKEN,
   serverPort: parseInt(process.env.PORT, 10) || 8020,
-  serverHost: '0.0.0.0'
+  serverHost: process.env.HOST || '0.0.0.0'
 });
 
 creator.on('debug', (message) => logger.debug(message));
@@ -25,4 +25,4 @@ creator.on('commandError', (command, error) => logger.error(`Command ${command.c
 
 creator.withServer(new FastifyServer()).registerCommandsIn(path.join(__dirname, 'commands')).startServer();
 
-logger.info(`Starting server at "localhost:${creator.options.serverPort}/interactions"`);
+logger.info(`Starting server at "${creator.options.serverHost}:${creator.options.serverPort}/interactions"`);

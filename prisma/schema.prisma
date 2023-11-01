@@ -11,4 +11,30 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Guild {
+  id        String          @id
+  name      String
+  lists     List[]
+  pairs     GuildListPair[]
+  createdAt DateTime        @default(now())
+}
 
+model List {
+  id        String          @id @default(cuid())
+  guilds    Guild[]
+  pairs     GuildListPair[]
+  createdBy String
+  createdAt DateTime        @default(now())
+}
+
+model GuildListPair {
+  guild     Guild    @relation(fields: [guildId], references: [id])
+  guildId   String
+  list      List     @relation(fields: [listId], references: [id])
+  listId    String
+  createdAt DateTime @default(now())
+
+  @@id([guildId, listId])
+  @@index([guildId])
+  @@index([listId])
+}
