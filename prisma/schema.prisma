@@ -12,25 +12,62 @@ generator client {
 }
 
 model Guild {
-  id        String          @id
-  name      String
-  lists     List[]
-  pairs     GuildListPair[]
-  createdAt DateTime        @default(now())
+  id         String          @id
+  name       String
+  enabled    Boolean         @default(true)
+  lists      List[]          @relation("ListMembers")
+  pairs      GuildListPair[]
+  createdAt  DateTime        @default(now())
+  ownedLists List[]          @relation("OwnedLists")
+}
+
+model InvitedGuild {
+  id           String       @id
+  invitedLists List[]
+  invites      ListInvite[]
+}
+
+model User {
+  id            String @id
+  username      String
+  discriminator String
+  createdLists  List[]
 }
 
 model List {
-  id        String          @id @default(cuid())
-  guilds    Guild[]
-  pairs     GuildListPair[]
-  createdBy String
-  createdAt DateTime        @default(now())
+  id            String          @id @default(cuid())
+  name          String
+  owner         Guild           @relation("OwnedLists", fields: [ownerId], references: [id], onUpdate: Cascade)
+  ownerId       String
+  creator       User            @relation(fields: [creatorId], references: [id], onUpdate: Cascade)
+  creatorId     String
+  createdAt     DateTime        @default(now())
+  lastBan       DateTime?
+  guilds        Guild[]         @relation("ListMembers")
+  pairs         GuildListPair[]
+  invitedGuilds InvitedGuild[]
+  invites       ListInvite[]
+
+  @@index([ownerId])
+  @@index([creatorId])
+}
+
+model ListInvite {
+  guild     InvitedGuild @relation(fields: [guildId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  guildId   String
+  list      List         @relation(fields: [listId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  listId    String
+  createdAt DateTime     @default(now())
+
+  @@id([guildId, listId])
+  @@index([guildId])
+  @@index([listId])
 }
 
 model GuildListPair {
-  guild     Guild    @relation(fields: [guildId], references: [id])
+  guild     Guild    @relation(fields: [guildId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   guildId   String
-  list      List     @relation(fields: [listId], references: [id])
+  list      List     @relation(fields: [listId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   listId    String
   createdAt DateTime @default(now())
 

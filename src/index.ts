@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { SlashCreator, FastifyServer } from 'slash-create';
 import path from 'path';
 import { logger } from './logger';
+import { xbotDisable, xbotEnable } from './components';
 
 const creator = new SlashCreator({
   applicationID: process.env.DISCORD_APP_ID,
@@ -26,3 +27,12 @@ creator.on('commandError', (command, error) => logger.error(`Command ${command.c
 creator.withServer(new FastifyServer()).registerCommandsIn(path.join(__dirname, 'commands')).startServer();
 
 logger.info(`Starting server at "${creator.options.serverHost}:${creator.options.serverPort}/interactions"`);
+
+creator.on('componentInteraction', async (ctx) => {
+  try {
+    if (ctx.customID === 'xbot:enable') await xbotEnable(ctx);
+    else if (ctx.customID === 'xbot:disable') await xbotDisable(ctx);
+  } catch (e) {
+    console.error(e);
+  }
+});

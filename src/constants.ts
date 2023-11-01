@@ -1,0 +1,2 @@
+export const MAX_LIST_PARTICIPATING = 25;
+export const MAX_LIST_PARTICIPANTS = 25;
