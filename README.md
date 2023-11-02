@@ -3,6 +3,8 @@ A simple slash-command bot that cross-bans users, created for Discord's Buildath
 
 However, because this does not use the gateway, the bot does not check the hierarchy of the user running the command and the user being banned.
 
+![](https://get.snaz.in/5F6dG5f.png)
+
 ## Installation
 ```sh
 npx degit Snazzah/xban
