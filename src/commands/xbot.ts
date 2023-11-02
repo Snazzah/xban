@@ -47,9 +47,10 @@ export default class Command extends SlashCommand {
         By enabling cross-banning, you acknowledge that you:
         1. Ensure you trust the guilds in the lists you participate in.
         2. Restrict command permissions to trusted roles in \`Server Settings > Integrations > xban\`. Cross-banning commands are restricted to users with ban permissions by default.
-        3. Use cross-bans sparingly and appropriately. Multiple bans in a short span could be abusive and may result in further action.
+        3. Use cross-bans sparingly and appropriately.
 
-        When cross-banning, xban will try to ban the specified user in the current guild, and will not propogate bans if that fails. **To prevent moderators of the same rank from banning each other, place xban's role below moderators**, while still giving it proper permissions.
+        When cross-banning, xban will try to ban the specified user in the current guild regardless of the moderator's roles and position, and will not propogate bans if that fails.
+        **To prevent moderators of the same rank from banning each other, place xban's role below moderators**, while still giving it proper permissions.
 
         ## By enabling this bot, you allow moderators of guilds in participating lists to ban users from this guild.
       `,

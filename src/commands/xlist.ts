@@ -486,7 +486,7 @@ export default class Command extends SlashCommand {
           ephemeral: true
         });
 
-        if (!/^\d+$/.test(guildId)) return await ctx.send({
+        if (!/^\d{17,20}$/.test(guildId)) return await ctx.send({
           content: 'Invalid guild ID.',
           ephemeral: true
         });
