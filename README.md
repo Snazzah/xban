@@ -1,4 +1,7 @@
 # xban
+A simple slash-command bot that cross-bans users, created for Discord's Buildathon 2023. Guilds can participate in cross-ban lists that can be referenced when cross-banning users.
+
+However, because this does not use the gateway, the bot does not check the hierarchy of the user running the command and the user being banned.
 
 ## Installation
 ```sh
